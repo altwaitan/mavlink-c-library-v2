@@ -5,7 +5,7 @@
 
 
 typedef struct __mavlink_highres_imu_t {
- uint64_t time_usec; /*< [us] Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.*/
+ uint64_t time_usec; /*< [us] Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude the number.*/
  float xacc; /*< [m/s/s] X acceleration*/
  float yacc; /*< [m/s/s] Y acceleration*/
  float zacc; /*< [m/s/s] Z acceleration*/
@@ -15,11 +15,11 @@ typedef struct __mavlink_highres_imu_t {
  float xmag; /*< [gauss] X Magnetic field*/
  float ymag; /*< [gauss] Y Magnetic field*/
  float zmag; /*< [gauss] Z Magnetic field*/
- float abs_pressure; /*< [hPa] Absolute pressure*/
- float diff_pressure; /*< [hPa] Differential pressure*/
+ float abs_pressure; /*< [mbar] Absolute pressure*/
+ float diff_pressure; /*< [mbar] Differential pressure*/
  float pressure_alt; /*<  Altitude calculated from pressure*/
  float temperature; /*< [degC] Temperature*/
- uint16_t fields_updated; /*<  Bitmap for fields that have updated since last message*/
+ uint16_t fields_updated; /*<  Bitmap for fields that have updated since last message, bit 0 = xacc, bit 12: temperature*/
  uint8_t id; /*<  Id. Ids are numbered from 0 and map to IMUs numbered from 1 (e.g. IMU1 will have a message with id=0)*/
 } mavlink_highres_imu_t;
 
@@ -86,7 +86,7 @@ typedef struct __mavlink_highres_imu_t {
  * @param component_id ID of this component (e.g. 200 for IMU)
  * @param msg The MAVLink message to compress the data into
  *
- * @param time_usec [us] Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+ * @param time_usec [us] Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude the number.
  * @param xacc [m/s/s] X acceleration
  * @param yacc [m/s/s] Y acceleration
  * @param zacc [m/s/s] Z acceleration
@@ -96,11 +96,11 @@ typedef struct __mavlink_highres_imu_t {
  * @param xmag [gauss] X Magnetic field
  * @param ymag [gauss] Y Magnetic field
  * @param zmag [gauss] Z Magnetic field
- * @param abs_pressure [hPa] Absolute pressure
- * @param diff_pressure [hPa] Differential pressure
+ * @param abs_pressure [mbar] Absolute pressure
+ * @param diff_pressure [mbar] Differential pressure
  * @param pressure_alt  Altitude calculated from pressure
  * @param temperature [degC] Temperature
- * @param fields_updated  Bitmap for fields that have updated since last message
+ * @param fields_updated  Bitmap for fields that have updated since last message, bit 0 = xacc, bit 12: temperature
  * @param id  Id. Ids are numbered from 0 and map to IMUs numbered from 1 (e.g. IMU1 will have a message with id=0)
  * @return length of the message in bytes (excluding serial stream start sign)
  */
@@ -159,7 +159,7 @@ static inline uint16_t mavlink_msg_highres_imu_pack(uint8_t system_id, uint8_t c
  * @param component_id ID of this component (e.g. 200 for IMU)
  * @param chan The MAVLink channel this message will be sent over
  * @param msg The MAVLink message to compress the data into
- * @param time_usec [us] Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+ * @param time_usec [us] Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude the number.
  * @param xacc [m/s/s] X acceleration
  * @param yacc [m/s/s] Y acceleration
  * @param zacc [m/s/s] Z acceleration
@@ -169,11 +169,11 @@ static inline uint16_t mavlink_msg_highres_imu_pack(uint8_t system_id, uint8_t c
  * @param xmag [gauss] X Magnetic field
  * @param ymag [gauss] Y Magnetic field
  * @param zmag [gauss] Z Magnetic field
- * @param abs_pressure [hPa] Absolute pressure
- * @param diff_pressure [hPa] Differential pressure
+ * @param abs_pressure [mbar] Absolute pressure
+ * @param diff_pressure [mbar] Differential pressure
  * @param pressure_alt  Altitude calculated from pressure
  * @param temperature [degC] Temperature
- * @param fields_updated  Bitmap for fields that have updated since last message
+ * @param fields_updated  Bitmap for fields that have updated since last message, bit 0 = xacc, bit 12: temperature
  * @param id  Id. Ids are numbered from 0 and map to IMUs numbered from 1 (e.g. IMU1 will have a message with id=0)
  * @return length of the message in bytes (excluding serial stream start sign)
  */
@@ -258,7 +258,7 @@ static inline uint16_t mavlink_msg_highres_imu_encode_chan(uint8_t system_id, ui
  * @brief Send a highres_imu message
  * @param chan MAVLink channel to send the message
  *
- * @param time_usec [us] Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+ * @param time_usec [us] Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude the number.
  * @param xacc [m/s/s] X acceleration
  * @param yacc [m/s/s] Y acceleration
  * @param zacc [m/s/s] Z acceleration
@@ -268,11 +268,11 @@ static inline uint16_t mavlink_msg_highres_imu_encode_chan(uint8_t system_id, ui
  * @param xmag [gauss] X Magnetic field
  * @param ymag [gauss] Y Magnetic field
  * @param zmag [gauss] Z Magnetic field
- * @param abs_pressure [hPa] Absolute pressure
- * @param diff_pressure [hPa] Differential pressure
+ * @param abs_pressure [mbar] Absolute pressure
+ * @param diff_pressure [mbar] Differential pressure
  * @param pressure_alt  Altitude calculated from pressure
  * @param temperature [degC] Temperature
- * @param fields_updated  Bitmap for fields that have updated since last message
+ * @param fields_updated  Bitmap for fields that have updated since last message, bit 0 = xacc, bit 12: temperature
  * @param id  Id. Ids are numbered from 0 and map to IMUs numbered from 1 (e.g. IMU1 will have a message with id=0)
  */
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -338,7 +338,7 @@ static inline void mavlink_msg_highres_imu_send_struct(mavlink_channel_t chan, c
 
 #if MAVLINK_MSG_ID_HIGHRES_IMU_LEN <= MAVLINK_MAX_PAYLOAD_LEN
 /*
-  This variant of _send() can be used to save stack space by re-using
+  This varient of _send() can be used to save stack space by re-using
   memory from the receive buffer.  The caller provides a
   mavlink_message_t which is the size of a full mavlink message. This
   is usually the receive buffer for the channel, and allows a reply to an
@@ -398,7 +398,7 @@ static inline void mavlink_msg_highres_imu_send_buf(mavlink_message_t *msgbuf, m
 /**
  * @brief Get field time_usec from highres_imu message
  *
- * @return [us] Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+ * @return [us] Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude the number.
  */
 static inline uint64_t mavlink_msg_highres_imu_get_time_usec(const mavlink_message_t* msg)
 {
@@ -498,7 +498,7 @@ static inline float mavlink_msg_highres_imu_get_zmag(const mavlink_message_t* ms
 /**
  * @brief Get field abs_pressure from highres_imu message
  *
- * @return [hPa] Absolute pressure
+ * @return [mbar] Absolute pressure
  */
 static inline float mavlink_msg_highres_imu_get_abs_pressure(const mavlink_message_t* msg)
 {
@@ -508,7 +508,7 @@ static inline float mavlink_msg_highres_imu_get_abs_pressure(const mavlink_messa
 /**
  * @brief Get field diff_pressure from highres_imu message
  *
- * @return [hPa] Differential pressure
+ * @return [mbar] Differential pressure
  */
 static inline float mavlink_msg_highres_imu_get_diff_pressure(const mavlink_message_t* msg)
 {
@@ -538,7 +538,7 @@ static inline float mavlink_msg_highres_imu_get_temperature(const mavlink_messag
 /**
  * @brief Get field fields_updated from highres_imu message
  *
- * @return  Bitmap for fields that have updated since last message
+ * @return  Bitmap for fields that have updated since last message, bit 0 = xacc, bit 12: temperature
  */
 static inline uint16_t mavlink_msg_highres_imu_get_fields_updated(const mavlink_message_t* msg)
 {

@@ -5,7 +5,7 @@
 
 
 typedef struct __mavlink_trajectory_representation_waypoints_t {
- uint64_t time_usec; /*< [us] Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.*/
+ uint64_t time_usec; /*< [us] Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude the number.*/
  float pos_x[5]; /*< [m] X-coordinate of waypoint, set to NaN if not being used*/
  float pos_y[5]; /*< [m] Y-coordinate of waypoint, set to NaN if not being used*/
  float pos_z[5]; /*< [m] Z-coordinate of waypoint, set to NaN if not being used*/
@@ -17,7 +17,7 @@ typedef struct __mavlink_trajectory_representation_waypoints_t {
  float acc_z[5]; /*< [m/s/s] Z-acceleration of waypoint, set to NaN if not being used*/
  float pos_yaw[5]; /*< [rad] Yaw angle, set to NaN if not being used*/
  float vel_yaw[5]; /*< [rad/s] Yaw rate, set to NaN if not being used*/
- uint16_t command[5]; /*<  MAV_CMD command id of waypoint, set to UINT16_MAX if not being used.*/
+ uint16_t command[5]; /*<  Scheduled action for each waypoint, UINT16_MAX if not being used.*/
  uint8_t valid_points; /*<  Number of valid points (up-to 5 waypoints are possible)*/
 } mavlink_trajectory_representation_waypoints_t;
 
@@ -91,7 +91,7 @@ typedef struct __mavlink_trajectory_representation_waypoints_t {
  * @param component_id ID of this component (e.g. 200 for IMU)
  * @param msg The MAVLink message to compress the data into
  *
- * @param time_usec [us] Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+ * @param time_usec [us] Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude the number.
  * @param valid_points  Number of valid points (up-to 5 waypoints are possible)
  * @param pos_x [m] X-coordinate of waypoint, set to NaN if not being used
  * @param pos_y [m] Y-coordinate of waypoint, set to NaN if not being used
@@ -104,7 +104,7 @@ typedef struct __mavlink_trajectory_representation_waypoints_t {
  * @param acc_z [m/s/s] Z-acceleration of waypoint, set to NaN if not being used
  * @param pos_yaw [rad] Yaw angle, set to NaN if not being used
  * @param vel_yaw [rad/s] Yaw rate, set to NaN if not being used
- * @param command  MAV_CMD command id of waypoint, set to UINT16_MAX if not being used.
+ * @param command  Scheduled action for each waypoint, UINT16_MAX if not being used.
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_trajectory_representation_waypoints_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
@@ -156,7 +156,7 @@ static inline uint16_t mavlink_msg_trajectory_representation_waypoints_pack(uint
  * @param component_id ID of this component (e.g. 200 for IMU)
  * @param chan The MAVLink channel this message will be sent over
  * @param msg The MAVLink message to compress the data into
- * @param time_usec [us] Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+ * @param time_usec [us] Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude the number.
  * @param valid_points  Number of valid points (up-to 5 waypoints are possible)
  * @param pos_x [m] X-coordinate of waypoint, set to NaN if not being used
  * @param pos_y [m] Y-coordinate of waypoint, set to NaN if not being used
@@ -169,7 +169,7 @@ static inline uint16_t mavlink_msg_trajectory_representation_waypoints_pack(uint
  * @param acc_z [m/s/s] Z-acceleration of waypoint, set to NaN if not being used
  * @param pos_yaw [rad] Yaw angle, set to NaN if not being used
  * @param vel_yaw [rad/s] Yaw rate, set to NaN if not being used
- * @param command  MAV_CMD command id of waypoint, set to UINT16_MAX if not being used.
+ * @param command  Scheduled action for each waypoint, UINT16_MAX if not being used.
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_trajectory_representation_waypoints_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan,
@@ -247,7 +247,7 @@ static inline uint16_t mavlink_msg_trajectory_representation_waypoints_encode_ch
  * @brief Send a trajectory_representation_waypoints message
  * @param chan MAVLink channel to send the message
  *
- * @param time_usec [us] Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+ * @param time_usec [us] Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude the number.
  * @param valid_points  Number of valid points (up-to 5 waypoints are possible)
  * @param pos_x [m] X-coordinate of waypoint, set to NaN if not being used
  * @param pos_y [m] Y-coordinate of waypoint, set to NaN if not being used
@@ -260,7 +260,7 @@ static inline uint16_t mavlink_msg_trajectory_representation_waypoints_encode_ch
  * @param acc_z [m/s/s] Z-acceleration of waypoint, set to NaN if not being used
  * @param pos_yaw [rad] Yaw angle, set to NaN if not being used
  * @param vel_yaw [rad/s] Yaw rate, set to NaN if not being used
- * @param command  MAV_CMD command id of waypoint, set to UINT16_MAX if not being used.
+ * @param command  Scheduled action for each waypoint, UINT16_MAX if not being used.
  */
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
@@ -319,7 +319,7 @@ static inline void mavlink_msg_trajectory_representation_waypoints_send_struct(m
 
 #if MAVLINK_MSG_ID_TRAJECTORY_REPRESENTATION_WAYPOINTS_LEN <= MAVLINK_MAX_PAYLOAD_LEN
 /*
-  This variant of _send() can be used to save stack space by re-using
+  This varient of _send() can be used to save stack space by re-using
   memory from the receive buffer.  The caller provides a
   mavlink_message_t which is the size of a full mavlink message. This
   is usually the receive buffer for the channel, and allows a reply to an
@@ -373,7 +373,7 @@ static inline void mavlink_msg_trajectory_representation_waypoints_send_buf(mavl
 /**
  * @brief Get field time_usec from trajectory_representation_waypoints message
  *
- * @return [us] Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+ * @return [us] Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude the number.
  */
 static inline uint64_t mavlink_msg_trajectory_representation_waypoints_get_time_usec(const mavlink_message_t* msg)
 {
@@ -503,7 +503,7 @@ static inline uint16_t mavlink_msg_trajectory_representation_waypoints_get_vel_y
 /**
  * @brief Get field command from trajectory_representation_waypoints message
  *
- * @return  MAV_CMD command id of waypoint, set to UINT16_MAX if not being used.
+ * @return  Scheduled action for each waypoint, UINT16_MAX if not being used.
  */
 static inline uint16_t mavlink_msg_trajectory_representation_waypoints_get_command(const mavlink_message_t* msg, uint16_t *command)
 {

@@ -10,7 +10,8 @@
     #error Wrong include order: MAVLINK_MINIMAL.H MUST NOT BE DIRECTLY USED. Include mavlink.h from the same directory instead or set ALL AND EVERY defines from MAVLINK.H manually accordingly, including the #define MAVLINK_H call.
 #endif
 
-#define MAVLINK_MINIMAL_XML_HASH -452921889865480545
+#undef MAVLINK_THIS_XML_IDX
+#define MAVLINK_THIS_XML_IDX 0
 
 #ifdef __cplusplus
 extern "C" {
@@ -41,7 +42,7 @@ typedef enum MAV_AUTOPILOT
    MAV_AUTOPILOT_GENERIC=0, /* Generic autopilot, full support for everything | */
    MAV_AUTOPILOT_RESERVED=1, /* Reserved for future use. | */
    MAV_AUTOPILOT_SLUGS=2, /* SLUGS autopilot, http://slugsuav.soe.ucsc.edu | */
-   MAV_AUTOPILOT_ARDUPILOTMEGA=3, /* ArduPilot - Plane/Copter/Rover/Sub/Tracker, https://ardupilot.org | */
+   MAV_AUTOPILOT_ARDUPILOTMEGA=3, /* ArduPilot - Plane/Copter/Rover/Sub/Tracker, http://ardupilot.org | */
    MAV_AUTOPILOT_OPENPILOT=4, /* OpenPilot, http://openpilot.org | */
    MAV_AUTOPILOT_GENERIC_WAYPOINTS_ONLY=5, /* Generic autopilot only supporting simple waypoints | */
    MAV_AUTOPILOT_GENERIC_WAYPOINTS_AND_SIMPLE_NAVIGATION_ONLY=6, /* Generic autopilot supporting waypoints and other simple navigation commands | */
@@ -58,8 +59,7 @@ typedef enum MAV_AUTOPILOT
    MAV_AUTOPILOT_ASLUAV=17, /* ASLUAV autopilot -- http://www.asl.ethz.ch | */
    MAV_AUTOPILOT_SMARTAP=18, /* SmartAP Autopilot - http://sky-drones.com | */
    MAV_AUTOPILOT_AIRRAILS=19, /* AirRails - http://uaventure.com | */
-   MAV_AUTOPILOT_REFLEX=20, /* Fusion Reflex - https://fusion.engineering | */
-   MAV_AUTOPILOT_ENUM_END=21, /*  | */
+   MAV_AUTOPILOT_ENUM_END=20, /*  | */
 } MAV_AUTOPILOT;
 #endif
 
@@ -87,12 +87,12 @@ typedef enum MAV_TYPE
    MAV_TYPE_FLAPPING_WING=16, /* Flapping wing | */
    MAV_TYPE_KITE=17, /* Kite | */
    MAV_TYPE_ONBOARD_CONTROLLER=18, /* Onboard companion controller | */
-   MAV_TYPE_VTOL_TAILSITTER_DUOROTOR=19, /* Two-rotor Tailsitter VTOL that additionally uses control surfaces in vertical operation. Note, value previously named MAV_TYPE_VTOL_DUOROTOR. | */
-   MAV_TYPE_VTOL_TAILSITTER_QUADROTOR=20, /* Quad-rotor Tailsitter VTOL using a V-shaped quad config in vertical operation. Note: value previously named MAV_TYPE_VTOL_QUADROTOR. | */
-   MAV_TYPE_VTOL_TILTROTOR=21, /* Tiltrotor VTOL. Fuselage and wings stay (nominally) horizontal in all flight phases. It able to tilt (some) rotors to provide thrust in cruise flight. | */
-   MAV_TYPE_VTOL_FIXEDROTOR=22, /* VTOL with separate fixed rotors for hover and cruise flight. Fuselage and wings stay (nominally) horizontal in all flight phases. | */
-   MAV_TYPE_VTOL_TAILSITTER=23, /* Tailsitter VTOL. Fuselage and wings orientation changes depending on flight phase: vertical for hover, horizontal for cruise. Use more specific VTOL MAV_TYPE_VTOL_DUOROTOR or MAV_TYPE_VTOL_QUADROTOR if appropriate. | */
-   MAV_TYPE_VTOL_TILTWING=24, /* Tiltwing VTOL. Fuselage stays horizontal in all flight phases. The whole wing, along with any attached engine, can tilt between vertical and horizontal mode. | */
+   MAV_TYPE_VTOL_DUOROTOR=19, /* Two-rotor VTOL using control surfaces in vertical operation in addition. Tailsitter. | */
+   MAV_TYPE_VTOL_QUADROTOR=20, /* Quad-rotor VTOL using a V-shaped quad config in vertical operation. Tailsitter. | */
+   MAV_TYPE_VTOL_TILTROTOR=21, /* Tiltrotor VTOL | */
+   MAV_TYPE_VTOL_RESERVED2=22, /* VTOL reserved 2 | */
+   MAV_TYPE_VTOL_RESERVED3=23, /* VTOL reserved 3 | */
+   MAV_TYPE_VTOL_RESERVED4=24, /* VTOL reserved 4 | */
    MAV_TYPE_VTOL_RESERVED5=25, /* VTOL reserved 5 | */
    MAV_TYPE_GIMBAL=26, /* Gimbal | */
    MAV_TYPE_ADSB=27, /* ADSB system | */
@@ -102,16 +102,7 @@ typedef enum MAV_TYPE
    MAV_TYPE_CHARGING_STATION=31, /* Charging station | */
    MAV_TYPE_FLARM=32, /* FLARM collision avoidance system | */
    MAV_TYPE_SERVO=33, /* Servo | */
-   MAV_TYPE_ODID=34, /* Open Drone ID. See https://mavlink.io/en/services/opendroneid.html. | */
-   MAV_TYPE_DECAROTOR=35, /* Decarotor | */
-   MAV_TYPE_BATTERY=36, /* Battery | */
-   MAV_TYPE_PARACHUTE=37, /* Parachute | */
-   MAV_TYPE_LOG=38, /* Log | */
-   MAV_TYPE_OSD=39, /* OSD | */
-   MAV_TYPE_IMU=40, /* IMU | */
-   MAV_TYPE_GPS=41, /* GPS | */
-   MAV_TYPE_WINCH=42, /* Winch | */
-   MAV_TYPE_ENUM_END=43, /*  | */
+   MAV_TYPE_ENUM_END=34, /*  | */
 } MAV_TYPE;
 #endif
 
@@ -174,7 +165,7 @@ typedef enum MAV_STATE
 #define HAVE_ENUM_MAV_COMPONENT
 typedef enum MAV_COMPONENT
 {
-   MAV_COMP_ID_ALL=0, /* Target id (target_component) used to broadcast messages to all components of the receiving system. Components should attempt to process messages with this component ID and forward to components on any other interfaces. Note: This is not a valid *source* component id for a message. | */
+   MAV_COMP_ID_ALL=0, /* Used to broadcast messages to all components of the receiving system. Components should attempt to process messages with this component ID and forward to components on any other interfaces. | */
    MAV_COMP_ID_AUTOPILOT1=1, /* System flight controller component ("autopilot"). Only one autopilot is expected in a particular system. | */
    MAV_COMP_ID_USER1=25, /* Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network. | */
    MAV_COMP_ID_USER2=26, /* Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network. | */
@@ -191,7 +182,7 @@ typedef enum MAV_COMPONENT
    MAV_COMP_ID_USER13=37, /* Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network. | */
    MAV_COMP_ID_USER14=38, /* Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network. | */
    MAV_COMP_ID_USER15=39, /* Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network. | */
-   MAV_COMP_ID_USER16=40, /* Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network. | */
+   MAV_COMP_ID_USE16=40, /* Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network. | */
    MAV_COMP_ID_USER17=41, /* Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network. | */
    MAV_COMP_ID_USER18=42, /* Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network. | */
    MAV_COMP_ID_USER19=43, /* Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network. | */
@@ -219,7 +210,7 @@ typedef enum MAV_COMPONENT
    MAV_COMP_ID_USER41=65, /* Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network. | */
    MAV_COMP_ID_USER42=66, /* Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network. | */
    MAV_COMP_ID_USER43=67, /* Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network. | */
-   MAV_COMP_ID_TELEMETRY_RADIO=68, /* Telemetry radio (e.g. SiK radio, or other component that emits RADIO_STATUS messages). | */
+   MAV_COMP_ID_USER44=68, /* Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network. | */
    MAV_COMP_ID_USER45=69, /* Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network. | */
    MAV_COMP_ID_USER46=70, /* Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network. | */
    MAV_COMP_ID_USER47=71, /* Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network. | */
@@ -271,46 +262,37 @@ typedef enum MAV_COMPONENT
    MAV_COMP_ID_SERVO12=151, /* Servo #12. | */
    MAV_COMP_ID_SERVO13=152, /* Servo #13. | */
    MAV_COMP_ID_SERVO14=153, /* Servo #14. | */
-   MAV_COMP_ID_GIMBAL=154, /* Gimbal #1. | */
+   MAV_COMP_ID_GIMBAL=154, /* Gimbal component. | */
    MAV_COMP_ID_LOG=155, /* Logging component. | */
    MAV_COMP_ID_ADSB=156, /* Automatic Dependent Surveillance-Broadcast (ADS-B) component. | */
    MAV_COMP_ID_OSD=157, /* On Screen Display (OSD) devices for video links. | */
    MAV_COMP_ID_PERIPHERAL=158, /* Generic autopilot peripheral component ID. Meant for devices that do not implement the parameter microservice. | */
    MAV_COMP_ID_QX1_GIMBAL=159, /* Gimbal ID for QX1. | */
    MAV_COMP_ID_FLARM=160, /* FLARM collision alert component. | */
-   MAV_COMP_ID_PARACHUTE=161, /* Parachute component. | */
-   MAV_COMP_ID_WINCH=169, /* Winch component. | */
-   MAV_COMP_ID_GIMBAL2=171, /* Gimbal #2. | */
-   MAV_COMP_ID_GIMBAL3=172, /* Gimbal #3. | */
-   MAV_COMP_ID_GIMBAL4=173, /* Gimbal #4 | */
-   MAV_COMP_ID_GIMBAL5=174, /* Gimbal #5. | */
-   MAV_COMP_ID_GIMBAL6=175, /* Gimbal #6. | */
-   MAV_COMP_ID_BATTERY=180, /* Battery #1. | */
-   MAV_COMP_ID_BATTERY2=181, /* Battery #2. | */
-   MAV_COMP_ID_MAVCAN=189, /* CAN over MAVLink client. | */
    MAV_COMP_ID_MISSIONPLANNER=190, /* Component that can generate/supply a mission flight plan (e.g. GCS or developer API). | */
-   MAV_COMP_ID_ONBOARD_COMPUTER=191, /* Component that lives on the onboard computer (companion computer) and has some generic functionalities, such as settings system parameters and monitoring the status of some processes that don't directly speak mavlink and so on. | */
-   MAV_COMP_ID_ONBOARD_COMPUTER2=192, /* Component that lives on the onboard computer (companion computer) and has some generic functionalities, such as settings system parameters and monitoring the status of some processes that don't directly speak mavlink and so on. | */
-   MAV_COMP_ID_ONBOARD_COMPUTER3=193, /* Component that lives on the onboard computer (companion computer) and has some generic functionalities, such as settings system parameters and monitoring the status of some processes that don't directly speak mavlink and so on. | */
-   MAV_COMP_ID_ONBOARD_COMPUTER4=194, /* Component that lives on the onboard computer (companion computer) and has some generic functionalities, such as settings system parameters and monitoring the status of some processes that don't directly speak mavlink and so on. | */
    MAV_COMP_ID_PATHPLANNER=195, /* Component that finds an optimal path between points based on a certain constraint (e.g. minimum snap, shortest path, cost, etc.). | */
    MAV_COMP_ID_OBSTACLE_AVOIDANCE=196, /* Component that plans a collision free path between two points. | */
    MAV_COMP_ID_VISUAL_INERTIAL_ODOMETRY=197, /* Component that provides position estimates using VIO techniques. | */
-   MAV_COMP_ID_PAIRING_MANAGER=198, /* Component that manages pairing of vehicle and GCS. | */
    MAV_COMP_ID_IMU=200, /* Inertial Measurement Unit (IMU) #1. | */
    MAV_COMP_ID_IMU_2=201, /* Inertial Measurement Unit (IMU) #2. | */
    MAV_COMP_ID_IMU_3=202, /* Inertial Measurement Unit (IMU) #3. | */
    MAV_COMP_ID_GPS=220, /* GPS #1. | */
    MAV_COMP_ID_GPS2=221, /* GPS #2. | */
-   MAV_COMP_ID_ODID_TXRX_1=236, /* Open Drone ID transmitter/receiver (Bluetooth/WiFi/Internet). | */
-   MAV_COMP_ID_ODID_TXRX_2=237, /* Open Drone ID transmitter/receiver (Bluetooth/WiFi/Internet). | */
-   MAV_COMP_ID_ODID_TXRX_3=238, /* Open Drone ID transmitter/receiver (Bluetooth/WiFi/Internet). | */
    MAV_COMP_ID_UDP_BRIDGE=240, /* Component to bridge MAVLink to UDP (i.e. from a UART). | */
    MAV_COMP_ID_UART_BRIDGE=241, /* Component to bridge to UART (i.e. from UDP). | */
-   MAV_COMP_ID_TUNNEL_NODE=242, /* Component handling TUNNEL messages (e.g. vendor specific GUI of a component). | */
-   MAV_COMP_ID_SYSTEM_CONTROL=250, /* Deprecated, don't use. Component for handling system messages (e.g. to ARM, takeoff, etc.). | */
+   MAV_COMP_ID_SYSTEM_CONTROL=250, /* Component for handling system messages (e.g. to ARM, takeoff, etc.). | */
    MAV_COMPONENT_ENUM_END=251, /*  | */
 } MAV_COMPONENT;
+#endif
+
+/** @brief Commands to be executed by the MAV. They can be executed on user request, or as part of a mission script. If the action is used in a mission, the parameter mapping to the waypoint/mission message is as follows: Param 1, Param 2, Param 3, Param 4, X: Param 5, Y:Param 6, Z:Param 7. This command list is similar what ARINC 424 is for commercial aircraft: A data format how to interpret waypoint/mission data. See https://mavlink.io/en/guide/xml_schema.html#MAV_CMD for information about the structure of the MAV_CMD entries */
+#ifndef HAVE_ENUM_MAV_CMD
+#define HAVE_ENUM_MAV_CMD
+typedef enum MAV_CMD
+{
+   MAV_CMD_REQUEST_PROTOCOL_VERSION=519, /* Request MAVLink protocol version compatibility |1: Request supported protocol versions by all nodes on the network| Reserved (all remaining params)| Reserved (default:0)| Reserved (default:0)| Reserved (default:0)| Reserved (default:0)| Reserved (default:0)|  */
+   MAV_CMD_ENUM_END=520, /*  | */
+} MAV_CMD;
 #endif
 
 // MAVLINK VERSION
@@ -331,8 +313,10 @@ typedef enum MAV_COMPONENT
 // base include
 
 
+#undef MAVLINK_THIS_XML_IDX
+#define MAVLINK_THIS_XML_IDX 0
 
-#if MAVLINK_MINIMAL_XML_HASH == MAVLINK_PRIMARY_XML_HASH
+#if MAVLINK_THIS_XML_IDX == MAVLINK_PRIMARY_XML_IDX
 # define MAVLINK_MESSAGE_INFO {MAVLINK_MESSAGE_INFO_HEARTBEAT, MAVLINK_MESSAGE_INFO_PROTOCOL_VERSION}
 # define MAVLINK_MESSAGE_NAMES {{ "HEARTBEAT", 0 }, { "PROTOCOL_VERSION", 300 }}
 # if MAVLINK_COMMAND_24BIT
